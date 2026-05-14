@@ -30,7 +30,7 @@ const SITES = [
     name:  'Parque Ilhabela MRV',
     url:   'https://parque-ilhabela-m-rv.vercel.app/',
     icon:  'ti-building-community',
-    funil: 'parque-ilhabela-v1',
+    funil: 'funil-01',
   },
   {
     id:    'senior',
