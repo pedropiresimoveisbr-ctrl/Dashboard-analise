@@ -23,34 +23,35 @@ const SUPABASE = {
 };
 
 // ── Sites monitorados ─────────────────────────────────────────
+// "funil" é o valor exato salvo no campo "funil" da tabela leads no Supabase
 const SITES = [
   {
     id:    'mrv',
     name:  'Parque Ilhabela MRV',
     url:   'https://parque-ilhabela-m-rv.vercel.app/',
     icon:  'ti-building-community',
-    tag:   'MRV',       // filtro de origem no Supabase (campo "origem" ou "fonte")
+    funil: 'parque-ilhabela-v1',
   },
   {
     id:    'senior',
     name:  'Ilhabela Sênior',
     url:   'https://ilhabela-senior-4df6.vercel.app/',
     icon:  'ti-building-community',
-    tag:   'senior',
+    funil: 'parque-ilhabela-senior',
   },
   {
     id:    'fgts',
     name:  'Ilhabela FGTS',
     url:   'https://ilhabela-fgts.vercel.app/',
     icon:  'ti-building-community',
-    tag:   'fgts',
+    funil: 'parque-ilhabela-fgts',
   },
   {
     id:    'urgencia',
     name:  'Ilhabela Urgência',
     url:   'https://ilhabela-urgencia.vercel.app/',
     icon:  'ti-building-community',
-    tag:   'urgencia',
+    funil: 'parque-ilhabela-urgencia',
   },
 ];
 

@@ -38,12 +38,12 @@ async function fetchTotalLeads() {
 // ── Leads por origem (campo "origem" da tabela leads) ─────────
 async function fetchLeadsByOrigin() {
   // Puxa campo "origem" de todos os leads para contar por site
-  const data = await sbFetch('leads', 'leads?select=origem,created_at&order=created_at.desc&limit=5000');
+  const data = await sbFetch('leads', 'leads?select=funil,created_at&order=created_at.desc&limit=5000');
   const counts = {};
   let lastCreated = null;
 
   data.forEach(row => {
-    const key = (row.origem || 'sem_origem').toLowerCase().trim();
+    const key = (row.funil || 'sem_funil').trim();
     counts[key] = (counts[key] || 0) + 1;
     if (!lastCreated || row.created_at > lastCreated) lastCreated = row.created_at;
   });

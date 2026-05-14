@@ -233,16 +233,10 @@ async function runAll() {
   const ccLeadsVal = ccLeads.status          === 'fulfilled' ? ccLeads.value.total    : 0;
   const updates    = lastUpdates.status      === 'fulfilled' ? lastUpdates.value      : { lastLead: null, lastCC: null };
 
-  // monta contagem de leads por site (tenta cruzar pelo tag)
+  // monta contagem de leads por site cruzando pelo campo "funil"
   const leadCounts = {};
   SITES.forEach(s => {
-    // tenta algumas variações do tag
-    const tag    = s.tag.toLowerCase();
-    const count  = leads.counts[tag]
-                || leads.counts[s.name.toLowerCase()]
-                || leads.counts[s.id]
-                || null;
-    leadCounts[s.id] = count;
+    leadCounts[s.id] = leads.counts[s.funil] ?? null;
   });
 
   // render
