@@ -6,116 +6,160 @@
   <title>Central de Operações — Ilhabela</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.4.0/tabler-icons.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="layout">
+
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <i class="ti ti-building-skyscraper" aria-hidden="true"></i>
-        <span>Ilhabela</span>
+        <div class="logo-icon"><i class="ti ti-building-skyscraper"></i></div>
+        <div>
+          <div class="logo-title">Ilhabela</div>
+          <div class="logo-sub">central de operações</div>
+        </div>
       </div>
+
       <nav class="sidebar-nav">
-        <a href="#" class="nav-item active">
-          <i class="ti ti-device-tv-old" aria-hidden="true"></i>
-          <span>Operações</span>
+        <a href="#section-status" class="nav-item active">
+          <i class="ti ti-device-tv-old"></i><span>Status</span>
         </a>
-        <a href="#" class="nav-item">
-          <i class="ti ti-chart-bar" aria-hidden="true"></i>
-          <span>Histórico</span>
+        <a href="#section-leads" class="nav-item">
+          <i class="ti ti-users"></i><span>Leads</span>
         </a>
-        <a href="#" class="nav-item">
-          <i class="ti ti-bell" aria-hidden="true"></i>
-          <span>Alertas</span>
+        <a href="#section-calls" class="nav-item">
+          <i class="ti ti-headset"></i><span>Call Center</span>
         </a>
-        <a href="#" class="nav-item">
-          <i class="ti ti-settings" aria-hidden="true"></i>
-          <span>Configurações</span>
+        <a href="#section-history" class="nav-item">
+          <i class="ti ti-clock-hour-4"></i><span>Histórico</span>
         </a>
       </nav>
-      <div class="sidebar-footer">
-        <div class="live-badge">
+
+      <div class="sidebar-live">
+        <div class="live-indicator">
           <span class="live-dot"></span>
-          ao vivo
+          <span class="live-label">ao vivo</span>
         </div>
-        <span id="last-check-side">—</span>
+        <div class="live-time" id="last-check-side">—</div>
+        <div class="live-next" id="next-check">próx. em 30s</div>
       </div>
     </aside>
 
+    <!-- MAIN -->
     <main class="main">
+
+      <!-- PAGE HEADER -->
       <header class="page-header">
         <div>
           <h1>Central de Operações</h1>
-          <p class="subtitle">monitoramento em tempo real — atualiza a cada 30s</p>
+          <p class="subtitle" id="header-subtitle">carregando dados...</p>
         </div>
-        <button class="btn-refresh" onclick="runChecks()" id="refresh-btn">
-          <i class="ti ti-refresh" id="refresh-icon" aria-hidden="true"></i>
-          Atualizar agora
+        <button class="btn-refresh" onclick="runAll()" id="refresh-btn">
+          <i class="ti ti-refresh" id="refresh-icon"></i>
+          Atualizar
         </button>
       </header>
 
-      <section class="summary-row" aria-label="Resumo geral">
-        <div class="metric-card">
-          <div class="metric-label">serviços online</div>
-          <div class="metric-value ok" id="count-online">—</div>
-          <div class="metric-sub">de <span id="count-total">7</span> monitorados</div>
+      <!-- SUMMARY METRICS -->
+      <section class="summary-row" id="section-status">
+        <div class="metric-card" id="mc-online">
+          <div class="metric-icon ok"><i class="ti ti-signal"></i></div>
+          <div class="metric-body">
+            <div class="metric-value" id="sum-online">—</div>
+            <div class="metric-label">serviços online</div>
+          </div>
+        </div>
+        <div class="metric-card" id="mc-issues">
+          <div class="metric-icon warn"><i class="ti ti-alert-triangle"></i></div>
+          <div class="metric-body">
+            <div class="metric-value" id="sum-issues">—</div>
+            <div class="metric-label">com problemas</div>
+          </div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">com problemas</div>
-          <div class="metric-value warn" id="count-issues">—</div>
-          <div class="metric-sub">offline ou lentos</div>
+          <div class="metric-icon info"><i class="ti ti-users"></i></div>
+          <div class="metric-body">
+            <div class="metric-value" id="sum-leads">—</div>
+            <div class="metric-label">leads capturados</div>
+          </div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">tempo médio</div>
-          <div class="metric-value" id="avg-response">—</div>
-          <div class="metric-sub">de resposta (ms)</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">uptime geral</div>
-          <div class="metric-value ok" id="uptime-pct">—</div>
-          <div class="metric-sub">última hora</div>
-        </div>
-      </section>
-
-      <section aria-label="Sites de captura de lead">
-        <div class="section-header">
-          <span class="section-label">sites de captura de lead</span>
-          <span class="section-count" id="lead-count">4 sites</span>
-        </div>
-        <div class="services-grid" id="lead-sites-grid"></div>
-      </section>
-
-      <section aria-label="App call center">
-        <div class="section-header">
-          <span class="section-label">app call center</span>
-        </div>
-        <div class="services-grid" id="callcenter-grid"></div>
-      </section>
-
-      <section aria-label="Infraestrutura Supabase">
-        <div class="section-header">
-          <span class="section-label">supabase — bancos de dados</span>
-          <span class="section-count">2 projetos</span>
-        </div>
-        <div class="services-grid" id="infra-grid"></div>
-      </section>
-
-      <section aria-label="Log de eventos" class="incident-section">
-        <div class="section-header">
-          <span class="section-label">log de eventos</span>
-          <button class="btn-clear" onclick="clearLog()">limpar</button>
-        </div>
-        <div class="incident-list" id="incident-log">
-          <div class="incident-empty">
-            <i class="ti ti-check" aria-hidden="true"></i>
-            nenhum evento registrado ainda
+          <div class="metric-icon purple"><i class="ti ti-phone-call"></i></div>
+          <div class="metric-body">
+            <div class="metric-value" id="sum-calls">—</div>
+            <div class="metric-label">ligações hoje</div>
           </div>
         </div>
       </section>
+
+      <!-- SITES STATUS -->
+      <section class="card-section" id="section-sites">
+        <div class="section-header">
+          <h2 class="section-title"><i class="ti ti-world"></i> Sites de Captura</h2>
+          <span class="section-badge" id="badge-sites">verificando...</span>
+        </div>
+        <div class="services-grid" id="sites-grid"></div>
+      </section>
+
+      <!-- CALL CENTER STATUS -->
+      <section class="card-section" id="section-callcenter">
+        <div class="section-header">
+          <h2 class="section-title"><i class="ti ti-headset"></i> Call Center</h2>
+          <span class="section-badge" id="badge-cc">verificando...</span>
+        </div>
+        <div class="services-grid" id="cc-grid"></div>
+      </section>
+
+      <!-- LEADS POR SITE -->
+      <section class="card-section" id="section-leads">
+        <div class="section-header">
+          <h2 class="section-title"><i class="ti ti-users"></i> Leads por Origem</h2>
+          <span class="section-badge" id="badge-leads-update">—</span>
+        </div>
+        <div class="leads-grid" id="leads-grid"></div>
+      </section>
+
+      <!-- CALL CENTER DATA -->
+      <section class="card-section" id="section-calls">
+        <div class="section-header">
+          <h2 class="section-title"><i class="ti ti-phone-call"></i> Call Center — Dados</h2>
+          <span class="section-badge" id="badge-calls-update">—</span>
+        </div>
+        <div class="calls-grid" id="calls-grid"></div>
+      </section>
+
+      <!-- HISTORICO DE QUEDAS -->
+      <section class="card-section" id="section-history">
+        <div class="section-header">
+          <h2 class="section-title"><i class="ti ti-clock-hour-4"></i> Histórico de Eventos</h2>
+          <button class="btn-clear" onclick="clearHistory()">limpar</button>
+        </div>
+        <div class="history-table-wrap">
+          <table class="history-table" id="history-table">
+            <thead>
+              <tr>
+                <th>horário</th>
+                <th>serviço</th>
+                <th>evento</th>
+                <th>status</th>
+                <th>resposta</th>
+              </tr>
+            </thead>
+            <tbody id="history-body">
+              <tr class="empty-row"><td colspan="5"><i class="ti ti-check"></i> nenhum evento ainda</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     </main>
   </div>
 
+  <script src="config.js"></script>
+  <script src="supabase.js"></script>
   <script src="monitor.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

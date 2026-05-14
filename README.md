@@ -1,83 +1,63 @@
-# 🏢 Central de Operações — Ilhabela
+# 🏢 Central de Operações — Ilhabela v2
 
-Dashboard de monitoramento em tempo real para todos os serviços da operação Ilhabela.
-
-## O que ele monitora
-
-| Serviço | URL |
-|---------|-----|
-| Parque Ilhabela MRV | https://parque-ilhabela-m-rv.vercel.app/ |
-| Ilhabela Sênior | https://ilhabela-senior-4df6.vercel.app/ |
-| Ilhabela FGTS | https://ilhabela-fgts.vercel.app/ |
-| Ilhabela Urgência | https://ilhabela-urgencia.vercel.app/ |
-| Dial Dash (Call Center) | https://dial-dash-grid-main.vercel.app/home |
-| Supabase Projeto 1 | https://iumyrskevtstzleqarxp.supabase.co |
-| Supabase Projeto 2 | https://okwqamdrgwbfyncqcide.supabase.co |
+Dashboard de monitoramento completo com dados reais do Supabase.
 
 ## Funcionalidades
 
-- ✅ Verificação automática a cada 30 segundos
-- ✅ Indicadores de status: online / offline / lento
-- ✅ Tempo de resposta em ms para cada serviço
-- ✅ Barra de histórico de uptime (últimas 30 verificações)
-- ✅ Log de eventos com registro de quedas e recuperações
-- ✅ Resumo geral: total online, problemas, tempo médio, uptime %
+- ✅ Status em tempo real de todos os serviços (uptime/lento/offline)
+- ✅ Contagem de leads capturados (direto do Supabase)
+- ✅ Ligações do call center hoje + breakdown por outcome
+- ✅ Última atualização de cada banco de dados
+- ✅ Tabela de histórico com horário exato de cada queda/retorno
 - ✅ Dark mode automático
-- ✅ Responsivo para mobile
+- ✅ Atualização a cada 30 segundos
 
 ## Estrutura
 
 ```
 ops-dashboard/
-├── index.html   # estrutura da página
-├── style.css    # estilos e temas (light/dark)
-├── monitor.js   # lógica de verificação e atualização
+├── index.html    estrutura da página
+├── style.css     estilos e temas (light/dark)
+├── config.js     URLs e chaves — edite aqui
+├── supabase.js   queries ao banco de dados
+├── monitor.js    verificação de uptime
+├── app.js        orquestração e renderização
 └── README.md
 ```
 
-## Como hospedar no GitHub Pages
+## Como atualizar as chaves do Supabase
 
-1. Crie um repositório no GitHub (pode ser privado ou público)
-2. Faça upload dos 3 arquivos: `index.html`, `style.css`, `monitor.js`
-3. Vá em **Settings → Pages**
-4. Em **Source**, selecione `main` e pasta `/ (root)`
-5. Clique em **Save**
-6. Em alguns minutos o dashboard estará em: `https://SEU-USUARIO.github.io/ops-dashboard/`
-
-## Como adicionar um novo serviço
-
-Abra `monitor.js` e adicione um objeto no array `SERVICES`:
+Abra `config.js` e edite o objeto `SUPABASE`:
 
 ```js
-{
-  id: 'meu-site',           // identificador único
-  group: 'lead-sites-grid', // grade onde vai aparecer
-  name: 'Meu Novo Site',    // nome exibido
-  url: 'https://meusite.vercel.app/',
-  icon: 'ti-world',         // ícone Tabler (https://tabler.io/icons)
-},
-```
-
-### Grupos disponíveis
-- `lead-sites-grid` — sites de captura de lead
-- `callcenter-grid` — app call center
-- `infra-grid` — infraestrutura (banco de dados, etc.)
-
-## Como ajustar a frequência de verificação
-
-Em `monitor.js`, edite o objeto `CONFIG`:
-
-```js
-const CONFIG = {
-  refreshInterval: 30000,  // 30s — mude para 60000 para 1 minuto
-  slowThreshold: 2500,     // ms acima disso = "lento"
-  historyLength: 30,       // checkpoints na barra de uptime
+const SUPABASE = {
+  callcenter: {
+    url:  'https://SEU-PROJETO.supabase.co',
+    anon: 'eyJhbGci...',
+  },
+  leads: {
+    url:  'https://SEU-OUTRO-PROJETO.supabase.co',
+    anon: 'eyJhbGci...',
+  },
 };
 ```
 
-## Tecnologias
+## Como adicionar um novo site monitorado
 
-- HTML/CSS/JS puro — sem frameworks, sem dependências de build
-- [Tabler Icons](https://tabler.io/icons) — ícones via webfont
-- [Google Fonts — Inter](https://fonts.google.com/specimen/Inter) — tipografia
-- Fetch API com `mode: no-cors` para verificação de disponibilidade
+Abra `config.js` e adicione no array `SITES`:
+
+```js
+{
+  id:   'novo-site',
+  name: 'Nome do Site',
+  url:  'https://meusite.vercel.app/',
+  icon: 'ti-world',
+  tag:  'origem_no_supabase',  // valor do campo "origem" na tabela leads
+},
+```
+
+## Deploy no GitHub Pages
+
+1. Faça push de todos os arquivos para o repositório
+2. Vá em Settings → Pages → Source: main / root
+3. Salve — em 2 min o dashboard estará no ar
