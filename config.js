@@ -26,6 +26,14 @@ const SUPABASE = {
 // "funil" é o valor exato salvo no campo "funil" da tabela leads no Supabase
 const SITES = [
   {
+  id:    'institucional',
+  name:  'Pedro Pires Imóveis',
+  url:   'https://pedro-pires.vercel.app/',
+  icon:  'ti-home',
+  funil: null,
+  },
+
+  {
     id:    'mrv',
     name:  'Parque Ilhabela MRV',
     url:   'https://parque-ilhabela-m-rv.vercel.app/',
