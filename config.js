@@ -30,7 +30,7 @@ const SITES = [
   name:  'Pedro Pires Imóveis',
   url:   'https://pedro-pires.vercel.app/',
   icon:  'ti-home',
-  funil: null,
+  funil: 'pedro-pires-site',
   },
 
   {
